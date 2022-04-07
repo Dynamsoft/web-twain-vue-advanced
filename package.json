@@ -1,0 +1,27 @@
+{
+  "name": "vue3-dwt-advance",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "ncp node_modules/dwt/dist public/dwt-resources && vue-cli-service serve",
+    "build": "vue-cli-service build&& ncp node_modules/dwt/dist dist/dwt-resources"
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "dwt": "^17.2.5",
+    "ncp": "^2.0.0",
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.16",
+    "@vue/cli-service": "~4.5.16",
+    "@vue/compiler-sfc": "^3.0.0",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
