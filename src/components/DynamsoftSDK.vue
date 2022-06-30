@@ -54,7 +54,7 @@ export default defineComponent({
     const loadDWT = (UseService) => {
       Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: 0, Height: 0 }];
       Dynamsoft.DWT.ResourcesPath = "/dwt-resources";
-		  Dynamsoft.DWT.ProductKey = 't00996QAAAG5+rENjiPPMIsWAYaCkbUZqvZYZrr3VynwCsEuFerN6G2GSWF8NfNSpN1P+ccKpVftgKLWPoLLD+kYqWvEsyLagviu+0Dk1e9QoRufftDB1GE9hioobNVEzaTfVEy/L';
+		  Dynamsoft.DWT.ProductKey = 't00891wAAAEbOWXicCg/1bwa29gTMj4S89ctUTkXBm+c5T4rfmfK+D7o7BxNdhMwAQhsRyqJ3AZfqg+fUDZ+dlQ7IHcOPlAHfBcF6F7iDMkC8gaSmKpbjBOJTLOo=';
       Dynamsoft.DWT.AutoLoad = true;
       Dynamsoft.DWT.RegisterEvent('OnWebTwainReady',() => webTwain_OnReady())
     }
