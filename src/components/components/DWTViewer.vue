@@ -134,7 +134,7 @@ export default defineComponent({
     }
 
     const handleInterpolationMethodChange = (event) => {
-        setInterpolationMethod(event.target.value)
+      interpolationMethod.value = event.target.value;
     }
 
     const handleQuickEdit = (event) => {

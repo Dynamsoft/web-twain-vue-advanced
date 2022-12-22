@@ -9,6 +9,7 @@ export default defineComponent({
     runtimeInfo: Object,
     zones: Array,
     features: Number,
+    bWin: Boolean,
   },
   setup(props) {
     let handleStatusChange = inject("handleStatusChange", Function);
@@ -242,8 +243,9 @@ export default defineComponent({
         <div class="dwt-recognize-content">
           <div class="dwt-recognize-scan">
             <button 
+              style={ props.bWin.value ? "display:block" : "display:none" }
               class={ props.buffer.count === 0 ? "btn-readBarcode btn-disabled" : "btn-readBarcode" }
-              disabled={ props.buffer.count === 0 ? true : false }
+              disabled={ (props.buffer.count === 0) ? true : false }
               onClick={ readBarcode }>
               <span>Read Barcode</span>
             </button>
@@ -268,7 +270,7 @@ export default defineComponent({
 
     .dwt-recognize-scan {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
 
       .btn-readBarcode {

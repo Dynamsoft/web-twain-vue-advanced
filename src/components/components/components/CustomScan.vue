@@ -72,44 +72,52 @@ export default defineComponent({
     }
 
     const acquireImage = () => {
-      if(props.dwt) {
-        props.dwt.CloseSource();
-        for (let i = 0; i < props.dwt.SourceCount; i++) {
-          if (props.dwt.GetSourceNameItems(i) === deviceSetup.currentScanner) {
-            props.dwt.SelectSourceByIndex(i);
-            break;
-          }
-        }
-        props.dwt.OpenSource();
-        props.dwt.AcquireImage({
-          IfShowUI: deviceSetup.bShowUI,
-          PixelType: deviceSetup.nPixelType,
-          Resolution: deviceSetup.nResolution,
-          IfFeederEnabled: deviceSetup.bADF,
-          IfDuplexEnabled: deviceSetup.bDuplex,
-          IfDisableSourceAfterAcquire: true,
-          IfGetImageInfo: true,
-          IfGetExtImageInfo: true,
-          extendedImageInfoQueryLevel: 0
-        },
-        () => handleOutPutMessage("Acquire success!", "important"),
-        () => handleOutPutMessage("Acquire failure!", "error")
-        )
-	    }
+      if(props.dwt){
+        props.dwt.GetDevicesAsync().then((devices)=>{   
+            for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                if (devices[i].displayName === deviceSetup.currentScanner) {
+                    return devices[i];
+                }
+            }
+        }).then((device) =>{
+            return props.dwt.SelectDeviceAsync(device);
+        }).then(()=>{
+            return props.dwt.AcquireImageAsync({
+                IfShowUI: deviceSetup.bShowUI,
+                PixelType: deviceSetup.nPixelType,
+                Resolution: deviceSetup.nResolution,
+                IfFeederEnabled: deviceSetup.bADF,
+                IfDuplexEnabled: deviceSetup.bDuplex,
+                IfDisableSourceAfterAcquire: true,
+                IfGetImageInfo: true,
+                IfGetExtImageInfo: true,
+                extendedImageInfoQueryLevel: 0
+                /**
+                 * NOTE: No errors are being logged!!
+                 */
+            });
+        }).then(()=>{
+            handleOutPutMessage("Acquire success!", "important")
+        }).catch(function (exp) {
+            handleOutPutMessage("Acquire failure!", "error")
+        });
+      }
     }
 
     watch(() => props.dwt, () => {
       if(props.dwt) {
         if(props.features & 0b1) {
-          let vCount = props.dwt.SourceCount;
-          let sourceNames = [];
-          for(let i=0; i<vCount; i++) {
-            sourceNames.push(props.dwt.GetSourceNameItems(i));
-          }
-          scanners.value = sourceNames;
-          if(sourceNames > 0) {
-            onSourceChange(sourceNames[0]);
-          }
+          props.dwt.GetDevicesAsync().then((devices)=>{
+            let sourceNames = [];
+            for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
+                sourceNames.push(devices[i].displayName);
+            }
+            scanners.value = sourceNames;
+            if (sourceNames.length > 0) onSourceChange(sourceNames[0]);
+
+          }).catch(function (exp) {
+              alert(exp.message);
+          });
         }
       }
     },{

@@ -19,6 +19,7 @@ export default defineComponent({
   setup(props) {
 
     const arrowDown = require('@/assets/arrow-down.png');
+    const bWin = ref(false);
     let TabShow = reactive({
       showCustomScan:true,
       showUseWebcams:false,
@@ -47,6 +48,12 @@ export default defineComponent({
       }
     }
 
+    watch(() => props.dwt, () => {
+      if(props.dwt) {
+        bWin.value = props.Dynamsoft.navInfo.bWin;
+      }
+    })
+
     return () => (
       <>
         <div class="dwt-setting">
@@ -67,7 +74,7 @@ export default defineComponent({
               </div>
             </div>
 
-            <div class="dwt-use-webcams">
+            <div class="dwt-use-webcams" style={ bWin.value ? "display:block" : "display:none" }>
               <div class="dwt-use-webcams-title" onClick={ () => changeTab(1) }>
                 <label for="useWebcams">
                   <span>Use Webcams</span>
@@ -131,6 +138,7 @@ export default defineComponent({
                   zones = { props.zones }
                   runtimeInfo = { props.runtimeInfo }
                   features = {props.features}
+                  bWin = { bWin }
                 ></Recognize>
               </div>
             </div>
