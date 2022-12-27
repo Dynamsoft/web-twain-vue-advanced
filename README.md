@@ -1,39 +1,48 @@
-## Introduction
+# Dynamic Web TWAIN Vue Advanced
 
 This project was bootstrapped with [Create Vue App](https://github.com/vuejs/vue-cli). It utilizes the SDK [Dynamic Web TWAIN](https://www.dynamsoft.com/Products/WebTWAIN_Overview.aspx) to provide the following functionalities
 
 * Scan documents from physical scanners
-* Capture images from Webcams
-* Read local documents (bmp/jpg/png/tif/pdf)
-* View and process the documents already scanned/captured/read
-  * Simple edits (rotate/flip/mirror/crop, etc.)
-  * Save locally or upload to the server
-  * Extract barcode or text
+* Capture images from webcams
+* Load documents from local disk (bmp/jpg/png/tif/pdf)
+* View and process the documents already scanned/captured/loaded
+  * Editing (rotate/flip/mirror/crop, etc.)
+  * Saving or uploading
+  * Barcode reading
 
-## What You Should Know
+## Usage
 
-- [![](https://img.shields.io/badge/Download-Offline%20SDK-orange)](https://www.dynamsoft.com/web-twain/downloads)
-- [![](https://img.shields.io/badge/Get-30--day%20FREE%20Trial%20License-blue)](https://www.dynamsoft.com/customer/license/trialLicense/?product=dwt)
+1. Apply for a [30-day free trial license](https://www.dynamsoft.com/customer/license/trialLicense?product=dwt) of Dynamic Web TWAIN.
 
-## Available Scripts
+2. Update the license key in `document-scanner.component.ts` file:
 
-In the project directory, you can run:
+   ```
+   Dynamsoft.DWT.ProductKey = "LICENSE-KEY";
+   ```
 
-### `yarn install` && `yarn serve`
+3. Install the dependencies:
 
-Sets up and runs the app in the development mode.<br />
-Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
+   ```
+   yarn install
+   ```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+4. Run the application as follows:
 
-### `cd server` && `yarn install` && `yarn start`
+   ```
+   yarn serve
+   ```
 
-Sets up and runs the server piece which is used solely for receiving uploaded files.
+5. Set up and run the server piece which is used solely for receiving uploaded files. Run the  command-line as follows:
 
-### `yarn build`
+   ```
+   cd server
+   yarn install
+   yarn start
+   ```
 
-Builds the app for production to the `build` folder.<br />
+## Build
+
+Run `yarn build` to build the project. The build artifacts will be stored in the `build/` directory. 
 It correctly bundles Vue in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br />
