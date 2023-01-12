@@ -9,7 +9,7 @@ export default defineComponent({
     runtimeInfo: Object,
     zones: Array,
     features: Number,
-    bWin: Boolean,
+    bWin: Object,
   },
   setup(props) {
     let handleStatusChange = inject("handleStatusChange", Function);

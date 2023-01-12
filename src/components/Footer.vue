@@ -6,7 +6,7 @@ export default defineComponent({
     return () => (
       <>
         <div class="footer">
-          <span>© 2003–2022 Dynamsoft. All rights reserved.</span>
+          <span>© 2003–2023 Dynamsoft. All rights reserved.</span>
         </div>
       </>
     );
