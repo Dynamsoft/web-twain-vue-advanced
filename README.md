@@ -14,7 +14,7 @@ This project was bootstrapped with [Create Vue App](https://github.com/vuejs/vue
 
 1. Apply for a [30-day free trial license](https://www.dynamsoft.com/customer/license/trialLicense?product=dwt) of Dynamic Web TWAIN.
 
-2. Update the license key in `document-scanner.component.ts` file:
+2. Update the license key in `src\components\DynamsoftSDK.vue` file:
 
    ```
    Dynamsoft.DWT.ProductKey = "LICENSE-KEY";

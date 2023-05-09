@@ -27,13 +27,13 @@ export default defineComponent({
         }
         return features;
       });
-      initialStatus = 255 - (features & 0b11100011);
+      initialStatus = features - (features & 0b11100011);
     }
 
     // status
     let startTime  = ref((new Date()).getTime());
     let unSupportedEnv = ref(false);
-    let dwt = ref();
+    let dwt = null;//ref();
     let status = ref(initialStatus);
     let selected = ref([]);
     let zones = ref([]);
@@ -54,7 +54,7 @@ export default defineComponent({
     const loadDWT = (UseService) => {
       Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: 0, Height: 0 }];
       Dynamsoft.DWT.ResourcesPath = "/dwt-resources";
-		  Dynamsoft.DWT.ProductKey = 't00901wAAACy5sL0CithUvqG09Q3fX0qr6fVQmMBRMN6BlhLLXan8mKGeCb/c8Me5e+6GSuLobuK6zIq4SENjkxye/DjM4zDl74JezQ0KpoUBygqIJS2+M3cKFS1W';
+		  Dynamsoft.DWT.ProductKey = 't0100CgEAAI/Kalkph+rANa7xvFeYzy2ZJaF0sV188r8K/knF/akFHHvAHdHAtGHQJrpxP+nqlDJkXOD65sKMbWhdmp6b7QgCWLr5A0huNQqu+DW0v3gAgcFwAvEGSBQj0nwHo981mg==';
       Dynamsoft.DWT.AutoLoad = true;
       Dynamsoft.DWT.RegisterEvent('OnWebTwainReady',() => webTwain_OnReady())
     }
@@ -64,36 +64,34 @@ export default defineComponent({
       if(DWObject) {
         DWObject.Viewer.width = width;
         DWObject.Viewer.height = height;
-        DWObject.Viewer.setViewMode(1, 1);
         DWObject.Viewer.show();
         handleStatusChange(1);
-        dwt.value = DWObject;
-        if(DWObject) {
-          DWObject.RegisterEvent("OnBitmapChanged", (changedIndex, changeType) => handleBufferChange(changedIndex, changeType));
-          DWObject.RegisterEvent("OnPostTransfer", () => handleBufferChange());
-          DWObject.RegisterEvent("OnPostLoad", () => handleBufferChange());
-          DWObject.RegisterEvent("OnPostAllTransfers", () => DWObject.CloseSource());
-		  DWObject.RegisterEvent("OnBufferChanged", (e) => {
-            if(e.action === 'shift' && e.currentId !==  -1){
-              handleBufferChange()
-            }
-          });
-          DWObject.Viewer.on('pageAreaSelected', (nImageIndex, rect) => {
-            if (rect.length > 0) {
-              let currentRect = rect[rect.length - 1];
-              let newZones = [...zones.value];
-              if(rect.length === 1)
-                newZones = [];
-              newZones.push({ x: currentRect.x, y: currentRect.y, width: currentRect.width, height: currentRect.height });
-              zones.value = newZones;
-            }
-          });
-          DWObject.Viewer.on('pageAreaUnselected', () => zones.value = []);
-          DWObject.Viewer.on("click", () => handleBufferChange());
-          if(Dynamsoft.Lib.env.bWin)
-            DWObject.MouseShape = false;
-          handleBufferChange();
-        }
+       // dwt.value = DWObject;
+        dwt = DWObject;
+        DWObject.RegisterEvent("OnBitmapChanged", (changedIndex, changeType) => handleBufferChange(changedIndex, changeType));
+        DWObject.RegisterEvent("OnPostTransfer", () => handleBufferChange());
+        DWObject.RegisterEvent("OnPostLoad", () => handleBufferChange());
+        DWObject.RegisterEvent("OnPostAllTransfers", () => DWObject.CloseSource());
+        DWObject.RegisterEvent("OnBufferChanged", (e) => {
+          if(e.action === 'shift' && e.currentId !==  -1){
+            handleBufferChange()
+          }
+        });
+        DWObject.Viewer.on('pageAreaSelected', (nImageIndex, rect) => {
+          if (rect.length > 0) {
+            let currentRect = rect[rect.length - 1];
+            let newZones = [...zones.value];
+            if(rect.length === 1)
+              newZones = [];
+            newZones.push({ x: currentRect.x, y: currentRect.y, width: currentRect.width, height: currentRect.height });
+            zones.value = newZones;
+          }
+        });
+        DWObject.Viewer.on('pageAreaUnselected', () => zones.value = []);
+        DWObject.Viewer.on("click", () => handleBufferChange());
+        if(Dynamsoft.Lib.env.bWin)
+          DWObject.MouseShape = false;
+        handleBufferChange();
       }
     }
 
@@ -125,12 +123,14 @@ export default defineComponent({
     onMounted(() => {
       Dynamsoft.Ready(function() {
         if(!Dynamsoft.Lib.env.bWin || !Dynamsoft.Lib.product.bChromeEdition) {
-          unSupportedEnv.value = true;
-          return;
-        } else {
-          if(DWObject === null) 
-            loadDWT(true);
-        }
+          //unSupportedEnv.value = true;
+          featureSet = { scan: 0b1, load: 0b100, save: 0b1000, upload: 0b10000, uploader: 0b10000000 };
+          features = 0b10011101;
+          initialStatus = 0;
+        } 
+        if(DWObject === null) 
+          loadDWT(true);
+        
       });
     })
     
@@ -148,8 +148,6 @@ export default defineComponent({
     provide("handleStatusChange",handleStatusChange);
 
     return () => (
-      unSupportedEnv.value ? <> <div>Please use Chrome, Firefox or Edge on Windows!</div> </>
-      :
       <>
         <div class="dwt-content">
           <DWTInterface
@@ -157,7 +155,8 @@ export default defineComponent({
             features = { features }
             containerId = { containerId }
             startTime = { startTime.value }
-            dwt = { dwt.value }
+            //dwt = { dwt.value }
+            dwt = { dwt }
             status = { status.value }
             selected = { selected.value }
             zones = { zones.value }

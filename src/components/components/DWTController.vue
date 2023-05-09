@@ -50,7 +50,7 @@ export default defineComponent({
 
     watch(() => props.dwt, () => {
       if(props.dwt) {
-        bWin.value = props.Dynamsoft.navInfo.bWin;
+        bWin.value = Dynamsoft.Lib.env.bWin;
       }
     })
 
@@ -123,7 +123,7 @@ export default defineComponent({
               </div>
             </div>
 
-            <div class="dwt-recognize">
+            <div class="dwt-recognize" style={ bWin.value ? "display:block" : "display:none" }>
               <div class="dwt-recognize-title" onClick={ () => changeTab(4) }>
                 <label for="dwt-recognize">
                   <span>Recognize</span>
