@@ -10,6 +10,7 @@ export default defineComponent({
     zones: Array,
     features: Number,
     bWin: Object,
+    barcodeRects: Array,
   },
   setup(props) {
     let handleStatusChange = inject("handleStatusChange", Function);
@@ -88,7 +89,7 @@ export default defineComponent({
             doneReadingBarcode();
           } else {
             handleOutPutMessage("--------------------------", "seperator");
-            handleOutPutMessage("Total barcode(s) found: " + dbrResults.length, "important");
+            handleOutPutMessage("Total barcode(s) found: " + dbrResults.value.length, "important");
             for(let i=0; i<dbrResults.value.length; i++) {
               let result = dbrResults.value[i];
               handleOutPutMessage("------------------", "seperator");
@@ -166,6 +167,10 @@ export default defineComponent({
           }
         )
       }
+    }
+
+    const clearBarcodeRects = () => {
+      handleBarcodeResults("clear");
     }
 
     const ocr = () => {
@@ -256,6 +261,14 @@ export default defineComponent({
               <span>OCR(English)</span>
             </button>
           </div>
+
+          <div class="dwt-recognize-scan" style={ props.barcodeRects.length > 0 ? "display:block; margin-top:10px" : "display:none" }>
+            <button 
+              class={ props.barcodeRects.length > 0 ?  "btn-clear-barcode" : "btn-clear-barcode btn-display-none" }
+              onClick={ clearBarcodeRects }>
+              <span>Clear Barcode Rects</span>
+            </button>
+          </div>
         </div>
       </>
     )
@@ -307,7 +320,20 @@ export default defineComponent({
       }
     }
   }
+
+  .btn-clear-barcode{
+    width: 98%;
+    height: 30px;
+    border-radius: 5px;
+    border:none;
+    background-color: rgb(80, 168, 225);
+    color: white;
+    font-size: 14px;
+  }
   .btn-disabled {
     background: #aaa !important;
+  }
+  .btn-display-none {
+    display: none;
   }
 </style>

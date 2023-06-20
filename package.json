@@ -7,17 +7,17 @@
     "build": "vue-cli-service build&& ncp node_modules/dwt/dist dist/dwt-resources"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "dwt": "^18.2.0",
+    "core-js": "^3.30.2",
+    "dwt": "^18.3.0",
     "ncp": "^2.0.0",
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.16",
-    "@vue/cli-service": "~4.5.16",
-    "@vue/compiler-sfc": "^3.0.0",
-    "sass": "^1.26.5",
-    "sass-loader": "^8.0.2"
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "@vue/compiler-sfc": "^3.3.4",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.3.1"
   },
   "browserslist": [
     "> 1%",

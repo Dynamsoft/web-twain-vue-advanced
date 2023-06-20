@@ -54,7 +54,7 @@ export default defineComponent({
     const loadDWT = (UseService) => {
       Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: 0, Height: 0 }];
       Dynamsoft.DWT.ResourcesPath = "/dwt-resources";
-		  Dynamsoft.DWT.ProductKey = 't0100CgEAAI/Kalkph+rANa7xvFeYzy2ZJaF0sV188r8K/knF/akFHHvAHdHAtGHQJrpxP+nqlDJkXOD65sKMbWhdmp6b7QgCWLr5A0huNQqu+DW0v3gAgcFwAvEGSBQj0nwHo981mg==';
+		  Dynamsoft.DWT.ProductKey = 't0106KwEAAHS5i/IQMtobY1KiE0ohnvp0rYQ6Odqe3YSTuwoeLvNCke4y7UccAqchMe1OUgSW/vPP42qfMZqjyorwWR/DnRUBbMP5AyjcPbyr+HVod/EEDJNDB2wFSOh/Xnlxg6lISUkO19Q75w==';
       Dynamsoft.DWT.AutoLoad = true;
       Dynamsoft.DWT.RegisterEvent('OnWebTwainReady',() => webTwain_OnReady())
     }
@@ -137,8 +137,8 @@ export default defineComponent({
     watch(buffer,() => {
       if (buffer.count > 0) {
           runtimeInfo.curImageTimeStamp = (new Date()).getTime();
-          runtimeInfo.showAbleWidth = DWObject.HowManyImagesInBuffer > 1 ? width - 16 : width;
-          runtimeInfo.showAbleHeight = height;
+          runtimeInfo.showAbleWidth = (DWObject.HowManyImagesInBuffer > 1 ? width - 17 : width)-4;
+          runtimeInfo.showAbleHeight = height-4;
           runtimeInfo.ImageWidth = DWObject.GetImageWidth(buffer.current);
           runtimeInfo.ImageHeight = DWObject.GetImageHeight(buffer.current);
       }

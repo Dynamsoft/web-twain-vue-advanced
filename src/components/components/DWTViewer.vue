@@ -319,7 +319,13 @@ export default defineComponent({
             </div>
           </div>
           <div class="viewer-content">
-            <div id={ props.containerId } class="viewer-main">
+            <div style={{ position: "relative", float: "left", width: width, height: height }} id={ props.containerId } class="viewer-main">
+            {props.barcodeRects.map((_rect, _index) => (
+                  <div key={_index} className="barcodeInfoRect" style={{ left: _rect.x + "px", top: _rect.y + "px", width: _rect.w + "px", height: _rect.h + "px" }} >
+                      <div className="spanContainer"><span>[{_index + 1}]</span>
+                      </div>
+                  </div>
+              ))}
             </div>
             <div class="pagination">
               <div class="pagination-tool">
@@ -519,5 +525,24 @@ export default defineComponent({
   .dwt-imageSizeEditor button {
     width: 48%;
     height: 20px;
+  }
+
+  .barcodeInfoRect {
+    position: absolute;
+    z-index: 10;
+    border: 1px solid red;
+  }
+
+  .image-container * {
+      box-sizing: content-box;
+  }
+
+  .spanContainer {
+      position: absolute;
+      left: 0px;
+      top: -14px;
+      color: blue;
+      font-size: 12px;
+      font-weight: bold;
   }
 </style>

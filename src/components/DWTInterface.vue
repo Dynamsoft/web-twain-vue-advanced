@@ -61,7 +61,7 @@ export default defineComponent({
         barcodeRects.value = [];
       } else {
         let _oldBR = [...barcodeRects.value];
-        if(results.length > 0) {
+        if(results.value.length > 0) {
           let zoom;
           if(props.runtimeInfo.showAbleWidth >= props.runtimeInfo.ImageWidth && props.runtimeInfo.showAbleHeight >= props.runtimeInfo.ImageHeight) {
             zoom = 1;
@@ -70,15 +70,15 @@ export default defineComponent({
           } else {
             zoom = props.runtimeInfo.showAbleWidth / props.runtimeInfo.ImageWidth;
           }
-          for (let i = 0; i < results.length; ++i) {
-            let result = results[i];
+          for (let i = 0; i < results.value.length; ++i) {
+            let result = results.value[i];
             let loc = result.localizationResult;
             let left = Math.min(loc.x1, loc.x2, loc.x3, loc.x4);
             let top = Math.min(loc.y1, loc.y2, loc.y3, loc.y4);
             let right = Math.max(loc.x1, loc.x2, loc.x3, loc.x4);
             let bottom = Math.max(loc.y1, loc.y2, loc.y3, loc.y4);
-            let leftBase = 1 + props.runtimeInfo.showAbleWidth / 2 - props.runtimeInfo.ImageWidth / 2 * zoom;
-            let topBase = 1 + props.runtimeInfo.showAbleHeight / 2 - props.runtimeInfo.ImageHeight / 2 * zoom;
+            let leftBase = 1+props.runtimeInfo.showAbleWidth / 2 - props.runtimeInfo.ImageWidth / 2 * zoom ;
+            let topBase = 2 + props.runtimeInfo.showAbleHeight / 2 - props.runtimeInfo.ImageHeight / 2 * zoom;
             let width = (right - left) * zoom;
             let height = (bottom - top) * zoom;
             left = leftBase + left * zoom;
@@ -150,10 +150,12 @@ export default defineComponent({
       }
     )
 
-    watch(() => props.buffer,
+    watch(props.buffer,
       (newBuffer, oldBuffer) => {
-        if((oldBuffer.current !== newBuffer.current) || newBuffer.updated) {
-          barcodeRects.value.length > 0 && handleBarcodeResults("clear");
+        if(barcodeRects.value.length > 0){
+          handleBarcodeResults("clear")
+        }
+        if(newBuffer.updated) {
           props.buffer.updated && props.handleBufferChange(); 
         }
       }
@@ -194,6 +196,7 @@ export default defineComponent({
               selected = { props.selected }
               zones = { props.zones }
               runtimeInfo = { props.runtimeInfo }
+              barcodeRects = { barcodeRects.value }
             ></DWTController>
             <DWTTips></DWTTips>
           </div>

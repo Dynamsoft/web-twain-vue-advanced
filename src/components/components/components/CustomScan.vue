@@ -105,11 +105,8 @@ export default defineComponent({
     }
 
     watch(() => props.dwt, () => {
-      console.log("props.dwt");
       if(props.dwt) {
-         console.log("after props.dwt");
         if(props.features & 0b1) {
-          console.log("GetDevicesAsync");
           props.dwt.GetDevicesAsync().then((devices)=>{
             let sourceNames = [];
             for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
