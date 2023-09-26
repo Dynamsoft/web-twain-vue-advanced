@@ -59,7 +59,7 @@ export default defineComponent({
     }
 
     const toggleUseUploade = (event) => {
-      bUseFileUploader.value = event.target.value;
+      bUseFileUploader.value = event.target.checked;
     }
 
     const saveOrUploadImage = (_type) => {
@@ -196,8 +196,8 @@ export default defineComponent({
               fileUploaderReady.value = true;
               handleStatusChange(128);
             }
-            }, (errorCode, errorString) => {
-              console.log(errorString);
+            }, (exp) => {
+              console.log(exp);
               // handleException({
               //   code: errorCode,
               //   message: "Initializing FileUploader failed: " + errorString

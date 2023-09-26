@@ -11,8 +11,12 @@ export default defineComponent({
 
     const loadImagesOrPDFs = () => {
       props.dwt.IfShowFileDialog = true;
-      props.dwt.Addon.PDF.SetResolution(200);
-      props.dwt.Addon.PDF.SetConvertMode(1);
+      props.dwt.Addon.PDF.SetReaderOptions({
+        convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
+        renderOptions: {
+            resolution: 200
+        }
+    });
       props.dwt.LoadImageEx("", 5, () => {
         handleOutPutMessage("Loaded an image successfully!");
       }, (errorCode, errorString) => {

@@ -33,8 +33,8 @@ export default defineComponent({
           handleStatusChange(32);
         }
       },
-       (ex) => {
-         console.log(ex);
+       (exp) => {
+         console.log(exp);
         // handleException({
         //   code: -6,
         //   message: "Initializing Barcode Reader failed: " + (ex.message || ex)
