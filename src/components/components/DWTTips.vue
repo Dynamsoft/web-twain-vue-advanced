@@ -5,15 +5,8 @@ export default defineComponent({
   setup() {
     return () => (
       <>
-        <div class="dwt-tips">
-          <p><strong>Platform &amp;Browser Support:</strong></p>
-          <p>Chrome|Firefox|Edge on Windows</p>
-          <p><strong>OCR:</strong></p>
-          <p>Only English with OCR Basic is demonstrated.</p>
-          <p>Click &nbsp;
-          <u><a target="_blank" href='https://www.dynamsoft.com/Products/ocr-basic-languages.aspx'>here</a></u>&nbsp; for other supported languages.&nbsp;
-          </p>
-        </div>
+      <div class="dwt-tips">
+      </div>
       </>
     )
   },

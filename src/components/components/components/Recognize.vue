@@ -21,8 +21,6 @@ export default defineComponent({
 
     const barcodeReady = ref(false);
     const readingBarcode = ref(false);
-    const ocrReady = ref(false);
-    const ocring = ref(false);
 
     const dbrResults = ref([]);
 
@@ -126,107 +124,8 @@ export default defineComponent({
       props.Dynamsoft.Lib.hideMask();
     }
 
-    const initOCR = (_features) => {
-      downloadOCRBasic(true, _features);
-    }
-
-    const downloadOCRBasic = (bDownloadDLL, _features) => {
-      let strOCRPath = props.Dynamsoft.DWT.ResourcesPath + "/addon/OCRx64.zip";
-      let strOCRLangPath = props.Dynamsoft.DWT.ResourcesPath + "/addon/OCRBasicLanguages/English.zip";
-      if(bDownloadDLL) {
-        if(props.dwt.Addon.OCR.IsModuleInstalled()) {
-          downloadOCRBasic(false, _features);
-        } else {
-          props.dwt.Addon.OCR.Download(
-            strOCRPath,
-            () => {
-              downloadOCRBasic(false);
-            },
-            (errorCode, errorString) => {
-              handleException({
-                code: errorCode,
-                message: errorString
-              })
-            }
-          )
-        }
-      } else {
-        props.dwt.Addon.OCR.DownloadLangData(
-          strOCRLangPath,
-          () => {
-            if(!ocrReady.value) {
-              ocrReady.value = true;
-              handleStatusChange(64);
-            }
-          },
-          (errorCode, errorString) => {
-            handleException({
-              code: errorCode,
-              message: errorString
-            })
-          }
-        )
-      }
-    }
-
     const clearBarcodeRects = () => {
       handleBarcodeResults("clear");
-    }
-
-    const ocr = () => {
-      props.dwt.Addon.OCR.SetLanguage('eng');
-      props.dwt.Addon.OCR.SetOutputFormat(props.Dynamsoft.DWT.EnumDWT_OCROutputFormat.OCROF_TEXT);
-      if(props.zones.length > 0) {
-        ocrRect(props.zones);
-      } else {
-        props.dwt.Addon.OCR.Recognize(
-          props.buffer.current,
-          (imageId, result) => {
-            if(result === null) {
-              handleOutPutMessage("Nothing found!", "important");
-              return;
-            }
-            handleOutPutMessage("", "", true);
-            handleOutPutMessage("OCR result:", "important");
-            handleOutPutMessage(props.Dynamsoft.Lib.base64.decode(result.Get()), "info", false, true);
-          },
-          (errorCode, errorString) => {
-            handleException({
-              code: errorCode,
-              message: errorString
-            })
-          }
-        )
-      }
-    }
-
-    const ocrRect = (_zones) => {
-      let doRectOCR = (_zone, _zoneId) => {
-        props.dwt.Addon.OCR.RecognizeRect(
-          props.buffer.current,
-          _zone.x, _zone.y, _zone.x + _zone.width, _zone.y + _zone.height,
-          (imageId, left, top, right, bottom, result) => {
-            if(result === null) {
-              handleOutPutMessage("Nothing found in the rect [" + left + ", " + top + ", " + right + ", " + bottom + "]", "important")
-              return;
-            }
-            if(_zoneId === 0) {
-              handleOutPutMessage("", "", true);
-            }
-            handleOutPutMessage("OCR result in the rect [" + left + ", " + top + ", " + right + ", " + bottom + "]", "important");
-            handleOutPutMessage(props.Dynamsoft.Lib.base64.decode(result.Get()), "info", false, true);
-            (++_zoneId < _zones.length) && doRectOCR(_zones[_zoneId], _zoneId);
-          },
-          (errorCode, errorString) => {
-            handleException({
-              code: errorCode,
-              message: errorString
-            });
-            (++_zoneId < _zones.length) && doRectOCR(_zones[_zoneId], _zoneId);
-          }
-        )
-      }
-      doRectOCR(_zones[0], 0);
     }
 
     watch(
@@ -235,9 +134,6 @@ export default defineComponent({
         if (props.features & 0b100000) {
             initBarcodeReader(props.features);
             }
-        if (props.features & 0b1000000) {
-            initOCR(props.features);
-        }
       }
     },{
       immediate: true
@@ -253,12 +149,6 @@ export default defineComponent({
               disabled={ (props.buffer.count === 0) ? true : false }
               onClick={ readBarcode }>
               <span>Read Barcode</span>
-            </button>
-            <button 
-              class={ props.buffer.count === 0 ?  "btn-ocr btn-disabled" : "btn-ocr" }
-              disabled={ props.buffer.count === 0 ? true : false }
-              onClick={ ocr }>
-              <span>OCR(English)</span>
             </button>
           </div>
 
@@ -299,22 +189,6 @@ export default defineComponent({
         font-size: 14px;
       }
       .btn-readBarcode:hover {
-        background-color: #61c2ec;
-        cursor: pointer;
-      }
-      .btn-ocr {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 48%;
-        height: 30px;
-        border-radius: 5px;
-        border:none;
-        background-color: rgb(80, 168, 225);
-        color: white;
-        font-size: 14px;
-      }
-      .btn-ocr:hover {
         background-color: #61c2ec;
         cursor: pointer;
       }

@@ -189,12 +189,12 @@ export default defineComponent({
 
     watch(() => props.dwt, () => {
       if(props.dwt) {
-        if(props.features & 0b10000000) {
+        if(props.features & 0b1000000) {
           props.Dynamsoft.FileUploader.Init("", (objFileUploader) => {
             fileUploaderManager = objFileUploader;
             if(!fileUploaderReady.value) {
               fileUploaderReady.value = true;
-              handleStatusChange(128);
+              handleStatusChange(64);
             }
             }, (exp) => {
               console.log(exp);

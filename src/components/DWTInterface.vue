@@ -29,8 +29,7 @@ export default defineComponent({
         (_statusChange & 1) && text.push("Core module ");
         (_statusChange & 2) && text.push("Webcam module ");
         (_statusChange & 32) && text.push("Barcode Reader module ");
-        (_statusChange & 64) && text.push("OCR module ");
-        (_statusChange & 128) && text.push("File Uploader module ");
+        (_statusChange & 64) && text.push("File Uploader module ");
         if(text.length > 1) {
           text = text.join(" & ");
         }

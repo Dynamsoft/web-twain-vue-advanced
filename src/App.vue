@@ -19,7 +19,6 @@ export default defineComponent({
             "save",
             "upload",
             "uploader",
-            "ocr",
             "barcode",
           ]}
         ></DynamsoftSDK>

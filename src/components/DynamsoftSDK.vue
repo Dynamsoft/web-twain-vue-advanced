@@ -10,8 +10,8 @@ export default defineComponent({
   },
   setup(props) {
 
-    let featureSet = { scan: 0b1, camera: 0b10, load: 0b100, save: 0b1000, upload: 0b10000, barcode: 0b100000, ocr: 0b1000000, uploader: 0b10000000 };
-    let features = 0b11111111;
+    let featureSet = { scan: 0b1, camera: 0b10, load: 0b100, save: 0b1000, upload: 0b10000, barcode: 0b100000, uploader: 0b1000000 };
+    let features = 0b1111111;
     let initialStatus = 0;
     let containerId = "dwtcontrolContainer";
     let DWObject = null;
@@ -27,7 +27,7 @@ export default defineComponent({
         }
         return features;
       });
-      initialStatus = features - (features & 0b11100011);
+      initialStatus = features - (features & 0b1100011);
     }
 
     // status
@@ -52,9 +52,17 @@ export default defineComponent({
 
     // create DWObject, register event
     const loadDWT = (UseService) => {
+      Dynamsoft.OnLicenseError = function (message, errorCode) {
+        if(errorCode == -2808)
+          message = '<div style="padding:0">Sorry. Your product key has expired. You can purchase a full license at the <a target="_blank" href="https://www.dynamsoft.com/store/dynamic-web-twain/#DynamicWebTWAIN">online store</a>.</div><div style="padding:0">Or, you can try requesting a new product key at <a target="_blank" href="https://www.dynamsoft.com/customer/license/trialLicense?product=dwt&utm_source=in-product">this page</a>.</div><div style="padding:0">If you need any help, please <a target="_blank" href="https://www.dynamsoft.com/company/contact/">contact us</a>.</div>';
+          Dynamsoft.DWT.ShowMessage(message, {
+          width: 680,
+          headerStyle: 2
+        });
+      };
       Dynamsoft.DWT.Containers = [{ ContainerId: 'dwtcontrolContainer', Width: 0, Height: 0 }];
       Dynamsoft.DWT.ResourcesPath = "/dwt-resources";
-		  Dynamsoft.DWT.ProductKey = 't0107KwEAAGoasMG9xI2Iav49dLPDNR+pjYp+ZwC2Mlvgf6RlAzGLYngM9RNg61sTaf9/OD1pJlJXhwmYhR5+GMEoOwjbuYGgASjT+QPI3FtFsOLXoefiCRicwwBsBUgYf159kSEbmSTpAaZBPWg=';
+		  Dynamsoft.DWT.ProductKey = 'DLS2eyJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSJ9';
       Dynamsoft.DWT.AutoLoad = true;
       Dynamsoft.DWT.RegisterEvent('OnWebTwainReady',() => webTwain_OnReady())
     }
@@ -124,8 +132,8 @@ export default defineComponent({
       Dynamsoft.Ready(function() {
         if(!Dynamsoft.Lib.env.bWin || !Dynamsoft.Lib.product.bChromeEdition) {
           //unSupportedEnv.value = true;
-          featureSet = { scan: 0b1, load: 0b100, save: 0b1000, upload: 0b10000, uploader: 0b10000000 };
-          features = 0b10011101;
+          featureSet = { scan: 0b1, load: 0b100, save: 0b1000, upload: 0b10000, uploader: 0b1000000 };
+          features = 0b1011101;
           initialStatus = 0;
         } 
         if(DWObject === null) 
