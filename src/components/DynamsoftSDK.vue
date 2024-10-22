@@ -14,7 +14,7 @@ export default defineComponent({
     let features = 0b1111111;
     let initialStatus = 0;
     let containerId = "dwtcontrolContainer";
-    let DWObject = null;
+    let DWTObject = null;
     let width = 590;
     let height = 522;
 
@@ -50,7 +50,7 @@ export default defineComponent({
       ImageHeight: 0
     });
 
-    // create DWObject, register event
+    // create DWTObject, register event
     const loadDWT = (UseService) => {
       Dynamsoft.OnLicenseError = function (message, errorCode) {
         if(errorCode == -2808)
@@ -68,24 +68,24 @@ export default defineComponent({
     }
 
     const webTwain_OnReady = () => {
-      DWObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer');
-      if(DWObject) {
-        DWObject.Viewer.width = width;
-        DWObject.Viewer.height = height;
-        DWObject.Viewer.show();
+      DWTObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer');
+      if(DWTObject) {
+        DWTObject.Viewer.width = width;
+        DWTObject.Viewer.height = height;
+        DWTObject.Viewer.show();
         handleStatusChange(1);
-       // dwt.value = DWObject;
-        dwt = DWObject;
-        DWObject.RegisterEvent("OnBitmapChanged", (changedIndex, changeType) => handleBufferChange(changedIndex, changeType));
-        DWObject.RegisterEvent("OnPostTransfer", () => handleBufferChange());
-        DWObject.RegisterEvent("OnPostLoad", () => handleBufferChange());
-        DWObject.RegisterEvent("OnPostAllTransfers", () => DWObject.CloseSource());
-        DWObject.RegisterEvent("OnBufferChanged", (e) => {
+       // dwt.value = DWTObject;
+        dwt = DWTObject;
+        DWTObject.RegisterEvent("OnBitmapChanged", (changedIndex, changeType) => handleBufferChange(changedIndex, changeType));
+        DWTObject.RegisterEvent("OnPostTransfer", () => handleBufferChange());
+        DWTObject.RegisterEvent("OnPostLoad", () => handleBufferChange());
+        DWTObject.RegisterEvent("OnPostAllTransfers", () => DWTObject.CloseSource());
+        DWTObject.RegisterEvent("OnBufferChanged", (e) => {
           if(e.action === 'shift' && e.currentId !==  -1){
             handleBufferChange()
           }
         });
-        DWObject.Viewer.on('pageAreaSelected', (nImageIndex, rect) => {
+        DWTObject.Viewer.on('pageAreaSelected', (nImageIndex, rect) => {
           if (rect.length > 0) {
             let currentRect = rect[rect.length - 1];
             let newZones = [...zones.value];
@@ -95,10 +95,10 @@ export default defineComponent({
             zones.value = newZones;
           }
         });
-        DWObject.Viewer.on('pageAreaUnselected', () => zones.value = []);
-        DWObject.Viewer.on("click", () => handleBufferChange());
+        DWTObject.Viewer.on('pageAreaUnselected', () => zones.value = []);
+        DWTObject.Viewer.on("click", () => handleBufferChange());
         if(Dynamsoft.Lib.env.bWin)
-          DWObject.MouseShape = false;
+          DWTObject.MouseShape = false;
         handleBufferChange();
       }
     }
@@ -121,11 +121,11 @@ export default defineComponent({
       if (changeType === 4) {
           _updated = true;
       }
-      let selection = DWObject.SelectedImagesIndices;
+      let selection = DWTObject.SelectedImagesIndices;
       selected.value = selection;
       buffer.updated = _updated;
-      buffer.current = DWObject.CurrentImageIndexInBuffer;
-      buffer.count = DWObject.HowManyImagesInBuffer;
+      buffer.current = DWTObject.CurrentImageIndexInBuffer;
+      buffer.count = DWTObject.HowManyImagesInBuffer;
     }
 
     onMounted(() => {
@@ -136,7 +136,7 @@ export default defineComponent({
           features = 0b1011101;
           initialStatus = 0;
         } 
-        if(DWObject === null) 
+        if(DWTObject === null) 
           loadDWT(true);
         
       });
@@ -145,10 +145,10 @@ export default defineComponent({
     watch(buffer,() => {
       if (buffer.count > 0) {
           runtimeInfo.curImageTimeStamp = (new Date()).getTime();
-          runtimeInfo.showAbleWidth = (DWObject.HowManyImagesInBuffer > 1 ? width - 17 : width)-4;
+          runtimeInfo.showAbleWidth = (DWTObject.HowManyImagesInBuffer > 1 ? width - 17 : width)-4;
           runtimeInfo.showAbleHeight = height-4;
-          runtimeInfo.ImageWidth = DWObject.GetImageWidth(buffer.current);
-          runtimeInfo.ImageHeight = DWObject.GetImageHeight(buffer.current);
+          runtimeInfo.ImageWidth = DWTObject.GetImageWidth(buffer.current);
+          runtimeInfo.ImageHeight = DWTObject.GetImageHeight(buffer.current);
       }
     })
 

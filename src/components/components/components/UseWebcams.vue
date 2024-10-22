@@ -159,8 +159,8 @@ export default defineComponent({
             let _default = event.target.getAttribute("_default");
             rangePicker.value.val = _default;
             _type === "camera"
-                ? DWObject.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], _default, false)
-                : DWObject.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], _default, false);
+                ? DWTObject.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], _default, false)
+                : DWTObject.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], _default, false);
             bShowRangePicker.value = false;
         } else if (value === "close-picker") {
             bShowRangePicker.value = false;
@@ -169,8 +169,8 @@ export default defineComponent({
             let prop = event.target.getAttribute("prop");
             rangePicker.value.val = value;
             _type === "camera"
-                ? DWObject.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], value, false)
-                : DWObject.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], value, false);
+                ? DWTObject.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], value, false)
+                : DWTObject.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], value, false);
         }
     }
 
