@@ -12,7 +12,7 @@ This project was bootstrapped with [Create Vue App](https://github.com/vuejs/vue
 
 ## Usage
 
-Environment: Node.js v18.16.0
+Environment: Node.js v22.14.0
 
 1. Apply for a [30-day free trial license](https://www.dynamsoft.com/customer/license/trialLicense?product=dwt) of Dynamic Web TWAIN.
 

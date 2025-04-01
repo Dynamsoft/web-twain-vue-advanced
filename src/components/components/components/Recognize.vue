@@ -2,6 +2,7 @@
 import { defineComponent, inject, ref, watch } from 'vue';
 
 export default defineComponent({
+
   props: {
     Dynamsoft: Object,
     dwt: Object,
@@ -9,10 +10,9 @@ export default defineComponent({
     runtimeInfo: Object,
     zones: Array,
     features: Number,
-    bWin: Object,
     barcodeRects: Array,
   },
-  setup(props) {
+  setup(props, ctx) {
     let handleStatusChange = inject("handleStatusChange", Function);
     let handleException = inject("handleException", Function);
     let handleBarcodeResults = inject("handleBarcodeResults", Function);
@@ -23,8 +23,13 @@ export default defineComponent({
     const readingBarcode = ref(false);
 
     const dbrResults = ref([]);
+    const parent_handleCloseVideo = inject('handleCloseVideo');
 
     const initBarcodeReader = (_features) => {
+
+      props.dwt.Viewer.on('wheel', clearBarcodeRects);
+      props.dwt.Viewer.on('scroll', clearBarcodeRects);
+
       props.dwt.Addon.BarcodeReader.getRuntimeSettings().then((settings) => {
         if(!barcodeReady.value) {
           barcodeReady.value = true;
@@ -41,9 +46,16 @@ export default defineComponent({
     }
 
     const readBarcode = () => {
+      parent_handleCloseVideo();
       props.Dynamsoft.Lib.showMask();
+      handleBarcodeResults("clear");
       readingBarcode.value = true;
       handleNavigating(false);
+      
+      if(props.dwt.Viewer) {
+        props.dwt.Viewer.gotoPage(props.dwt.CurrentImageIndexInBuffer);
+      }
+
       props.dwt.Addon.BarcodeReader.getRuntimeSettings().then((settings) => {
         if(props.dwt.GetImageBitDepth(props.buffer.current) === 1) {
           settings.scaleDownThreshold = 214748347;
@@ -133,7 +145,7 @@ export default defineComponent({
       if(props.dwt) {
         if (props.features & 0b100000) {
             initBarcodeReader(props.features);
-            }
+        }
       }
     },{
       immediate: true
@@ -144,7 +156,6 @@ export default defineComponent({
         <div class="dwt-recognize-content">
           <div class="dwt-recognize-scan">
             <button 
-              style={ props.bWin.value ? "display:block" : "display:none" }
               class={ props.buffer.count === 0 ? "btn-readBarcode btn-disabled" : "btn-readBarcode" }
               disabled={ (props.buffer.count === 0) ? true : false }
               onClick={ readBarcode }>

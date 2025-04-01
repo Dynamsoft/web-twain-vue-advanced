@@ -66,7 +66,7 @@ export default defineComponent({
             let _valuePacks = props.valuePacks;
             if(currentValues.length === 0 || newTargetObject !== prevTargetObject){
                 for(let i = 0; i < _valuePacks.length; i++) {
-                    if (_valuePacks[i].name === props.current) {
+                    if (_valuePacks[i].name === current.value) {
                         currentValues.length = 0;
                         currentValues.push(..._valuePacks[i].items);
                         return;

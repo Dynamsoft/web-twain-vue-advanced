@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, watch, inject, onUpdated } from 'vue';
+import { defineComponent, defineExpose, ref, reactive, watch, inject, onUpdated } from 'vue';
 import WebcamOption from './WebcamOption.vue'
 import RangePicker from './RangePicker.vue'
 
@@ -11,12 +11,13 @@ export default defineComponent({
     features: Number,
     showUseWebcams: Boolean
   },
-  setup(props) {
+  setup(props, ctx) {
     let handleStatusChange = inject("handleStatusChange", Function);
     let handleException = inject("handleException", Function);
     const cameras = ref([]);
     const cameraReady = ref(false);
     const cameraSettings = reactive([]);
+    const handleBarcodeResults = inject("handleBarcodeResults", Function);
 
     let deviceSetup = reactive({
       currentCamera: "Looking for devices..",
@@ -142,6 +143,9 @@ export default defineComponent({
     const toggleCameraVideo = (bShow) => {
       if(props.dwt) {
         if(bShow) {
+          // clear barcode rects
+          handleBarcodeResults("clear");
+
           playVideo();
           deviceSetup.isVideoOn = true;
         } else {
@@ -151,6 +155,10 @@ export default defineComponent({
       }
     }
 
+    ctx.expose({
+      toggleCameraVideo
+    })
+
     const handleRangeChange = (event) => {
         let value = event.target.value ? event.target.value : event.target.getAttribute("value");
         if (value === "reset-range") {
@@ -159,8 +167,8 @@ export default defineComponent({
             let _default = event.target.getAttribute("_default");
             rangePicker.value.val = _default;
             _type === "camera"
-                ? DWTObject.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], _default, false)
-                : DWTObject.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], _default, false);
+                ? props.dwt.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], _default, false)
+                : props.dwt.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], _default, false);
             bShowRangePicker.value = false;
         } else if (value === "close-picker") {
             bShowRangePicker.value = false;
@@ -169,8 +177,8 @@ export default defineComponent({
             let prop = event.target.getAttribute("prop");
             rangePicker.value.val = value;
             _type === "camera"
-                ? DWTObject.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], value, false)
-                : DWTObject.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], value, false);
+                ? props.dwt.Addon.Webcam.SetCameraControlPropertySetting(Dynamsoft.DWT.EnumDWT_CameraControlProperty["CCP_" + prop], value, false)
+                : props.dwt.Addon.Webcam.SetVideoPropertySetting(Dynamsoft.DWT.EnumDWT_VideoProperty["VP_" + prop], value, false);
         }
     }
 

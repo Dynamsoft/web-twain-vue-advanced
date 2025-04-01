@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, toRaw, watch, onMounted } from 'vue';
+import { defineComponent, ref, reactive, toRaw, watch, onMounted, provide } from 'vue';
 import CustomScan from './components/CustomScan.vue';
 import UseWebcams from './components/UseWebcams.vue';
 import LoadFiles from './components/LoadFiles.vue';
@@ -17,17 +17,20 @@ export default defineComponent({
     selected: Array,
     barcodeRects: Array,
   },
+
   setup(props) {
 
     const arrowDown = require('@/assets/arrow-down.png');
     const bWin = ref(false);
+    const useWebcamsRef = ref(null);
+
     let TabShow = reactive({
       showCustomScan:true,
       showUseWebcams:false,
       showLoadFiles:false,
       showSaveDocuments:true,
       showRecognize:false
-    })
+    });
 
     const changeTab = (i) => {
       switch (i) {
@@ -47,13 +50,19 @@ export default defineComponent({
           TabShow.showRecognize ? TabShow.showRecognize = false : (TabShow.showRecognize = true , TabShow.showSaveDocuments = false);
           break;
       }
-    }
+    };
 
     watch(() => props.dwt, () => {
       if(props.dwt) {
         bWin.value = Dynamsoft.Lib.env.bWin;
       }
-    })
+    });
+    
+    provide('handleCloseVideo',
+      () => {
+        useWebcamsRef.value.toggleCameraVideo(false);
+      }
+    );
 
     return () => (
       <>
@@ -66,7 +75,7 @@ export default defineComponent({
                   <img src={ arrowDown } alt="arrow-down" />
                 </label>
               </div>
-              <div  style={ TabShow.showCustomScan ? "display:block" : "display:none" }>
+              <div style={ TabShow.showCustomScan ? "display:block" : "display:none" }>
                 <CustomScan
                   Dynamsoft = { props.Dynamsoft }
                   dwt = { props.dwt }
@@ -82,12 +91,13 @@ export default defineComponent({
                   <img src={ arrowDown } alt="arrow-down" />
                 </label>
               </div>
-              <div  style={ TabShow.showUseWebcams ? "display:block" : "display:none" }>
+              <div style={ TabShow.showUseWebcams ? "display:block" : "display:none" }>
                 <UseWebcams
                   Dynamsoft = { props.Dynamsoft }
                   dwt={ props.dwt }
                   features={ props.features }
                   showUseWebcams = { TabShow.showUseWebcams }
+                  ref = { useWebcamsRef }
                 ></UseWebcams>
               </div>
             </div>
@@ -124,14 +134,14 @@ export default defineComponent({
               </div>
             </div>
 
-            <div class="dwt-recognize" style={ bWin.value ? "display:block" : "display:none" }>
+            <div class="dwt-recognize">
               <div class="dwt-recognize-title" onClick={ () => changeTab(4) }>
                 <label for="dwt-recognize">
                   <span>Recognize</span>
                   <img src={ arrowDown } alt="arrow-down" />
                 </label>
               </div>
-              <div  style={ TabShow.showRecognize ? "display:block" : "display:none" }>
+              <div style={ TabShow.showRecognize ? "display:block" : "display:none" }>
                 <Recognize
                   Dynamsoft = { props.Dynamsoft }
                   dwt = { props.dwt }
@@ -148,7 +158,8 @@ export default defineComponent({
         </div>
       </>
     )
-  },
+  }
+
 })
 </script>
 
