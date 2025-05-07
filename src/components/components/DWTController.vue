@@ -149,7 +149,6 @@ export default defineComponent({
                   zones = { props.zones }
                   runtimeInfo = { props.runtimeInfo }
                   features = {props.features}
-                  bWin = { bWin }
                   barcodeRects = {props.barcodeRects}
                 ></Recognize>
               </div>

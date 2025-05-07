@@ -30,7 +30,7 @@ export default defineComponent({
             <ul>
                 {
                   props.messages.map((oneMsg) =>
-                      <li key={ oneMsg.time + "_" + Math.floor(Math.random(1) * 10000000) } 
+                      <li key={ oneMsg.time + "_" + Math.floor(Math.random(1) * 1000000000) } 
                           className={ oneMsg.type }>{ oneMsg.text }</li>
                   )
                 }

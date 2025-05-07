@@ -356,12 +356,12 @@ export default defineComponent({
                 </button>
               </div>
               <div>
-                <select value={ previewMode.value } onChange={ (event) => handlePreviewModeChange(event) }>
-                  <option value="1">1X1</option>
-                  <option value="2">2X2</option>
-                  <option value="3">3X3</option>
-                  <option value="4">4X4</option>
-                  <option value="5">5X5</option>
+                <select class="previewMode" value={ previewMode.value } onChange={ (event) => handlePreviewModeChange(event) }>
+                  <option value="1">1x1</option>
+                  <option value="2">2x2</option>
+                  <option value="3">3x3</option>
+                  <option value="4">4x4</option>
+                  <option value="5">5x5</option>
                 </select>
               </div>
             </div>

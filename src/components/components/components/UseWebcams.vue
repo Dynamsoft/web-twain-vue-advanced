@@ -149,8 +149,10 @@ export default defineComponent({
           playVideo();
           deviceSetup.isVideoOn = true;
         } else {
-          props.dwt.Addon.Webcam.StopVideo();
-          deviceSetup.isVideoOn = false;
+          if(deviceSetup.isVideoOn) {
+            props.dwt.Addon.Webcam.StopVideo();
+            deviceSetup.isVideoOn = false;
+          }
         }
       }
     }

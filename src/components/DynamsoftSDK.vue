@@ -85,6 +85,17 @@ export default defineComponent({
             handleBufferChange()
           }
         });
+        
+        // from v19.0
+        DWTObject.Addon.PDF.SetReaderOptions({
+            convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
+            renderOptions: {
+                renderAnnotations: true,
+                resolution: 200
+            },
+            preserveUnmodifiedOnSave: true
+        });
+        
         DWTObject.Viewer.on('pageAreaSelected', (nImageIndex, rect) => {
           if (rect.length > 0) {
             let currentRect = rect[rect.length - 1];

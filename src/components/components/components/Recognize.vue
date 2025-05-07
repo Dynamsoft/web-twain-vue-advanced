@@ -46,6 +46,13 @@ export default defineComponent({
     }
 
     const readBarcode = () => {
+
+      let previewModeEl = document.querySelector('.previewMode');
+      if (previewModeEl && previewModeEl.value !== "1") {
+          handleOutPutMessage("Cannot read barcode in this view mode. Please switch to 1x1 view mode.", "error");
+          return;
+      }
+
       parent_handleCloseVideo();
       props.Dynamsoft.Lib.showMask();
       handleBarcodeResults("clear");
@@ -77,6 +84,15 @@ export default defineComponent({
             } else {
               doReadBarcode(settings, readBarcodeFromRect);
             }
+          }
+          settings.region.left = props.zones[0].x;
+          settings.region.top = props.zones[0].y;
+          settings.region.right = props.zones[0].x + props.zones[0].width;
+          settings.region.bottom = props.zones[0].y + props.zones[0].height;
+          if(props.zones.length === 1) {
+            doReadBarcode(settings);
+          } else {
+            doReadBarcode(settings, readBarcodeFromRect);
           }
         } else {
           settings.region.left = 0;
