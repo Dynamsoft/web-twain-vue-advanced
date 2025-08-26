@@ -3,6 +3,9 @@ import { defineComponent, defineExpose, ref, reactive, watch, inject, onUpdated 
 import WebcamOption from './WebcamOption.vue'
 import RangePicker from './RangePicker.vue'
 
+let strMediaType,
+    strResolution,
+    frameRate;
 
 export default defineComponent({
   props: {
@@ -42,6 +45,7 @@ export default defineComponent({
     })
 
     const onCameraChange = (value) => {
+      console.log(value);
       deviceSetup.currentCamera = value;
 
       if(value === "noCamera") {
@@ -71,6 +75,10 @@ export default defineComponent({
         frameRates = frameRates._resultlist;
         resolutions = resolutions._resultlist;
 
+        strMediaType = _currentMediaType;
+        strResolution = _currentResolution;
+        frameRate = _currentFrameRate;
+        
         for(let i=0; i<mediaTypes.length-1; i++) {
           mediaTypes[i] === _currentMediaType
             ? _mediaTypes[i] = { value: mediaTypes[i].toString(), checked: true }
@@ -120,6 +128,7 @@ export default defineComponent({
           cameraReady.value = true;
           handleStatusChange(2);
         }
+
       } else {
         handleException({
           code: -2,
@@ -223,12 +232,19 @@ export default defineComponent({
           return;
 
         } else {
-          props.dwt.Addon.Webcam.StopVideo();
+
+          let bChanged = false;
           switch (config.prop) {
-            case "Frame Rate": props.dwt.Addon.Webcam.SetFrameRate(config.value); break;
-            case "Media Type": props.dwt.Addon.Webcam.SetMediaType(config.value); break;
-            case "Resolution": props.dwt.Addon.Webcam.SetResolution(config.value); break;
-            default: break;
+              case "Frame Rate": if(frameRate != parseInt(config.value)) { frameRate = parseInt(config.value); bChanged = true; } break;
+              case "Media Type": if(strMediaType != config.value) { strMediaType = config.value; bChanged = true;  } break;
+              case "Resolution": if(strResolution != config.value) { strResolution = config.value; bChanged = true;  } break;
+              default: break;
+          }
+
+          if(bChanged) {
+              props.dwt.Addon.Webcam.SetMediaType(strMediaType);
+              props.dwt.Addon.Webcam.SetResolution(strResolution);
+              props.dwt.Addon.Webcam.SetFrameRate(frameRate);
           }
         }
       }
