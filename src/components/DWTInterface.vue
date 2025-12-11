@@ -1,9 +1,8 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, toRaw, toRef, watch, onMounted, provide, inject } from 'vue';
+import { defineComponent, ref, reactive, watch, provide } from 'vue';
 import DWTViewer from './components/DWTViewer.vue';
 import DWTController from './components/DWTController.vue';
 import DWTMessage from './components/DWTMessage.vue';
-import DWTTips from './components/DWTTips.vue';
 
 
 export default defineComponent({
@@ -84,6 +83,7 @@ export default defineComponent({
             top = topBase + top * zoom;
             _oldBR.push({ x: left, y: top, w: width, h: height });
           }
+
           barcodeRects.value = _oldBR;
         }
       }
@@ -155,7 +155,7 @@ export default defineComponent({
           handleBarcodeResults("clear")
         }
         if(newBuffer.updated) {
-          props.buffer.updated && props.handleBufferChange(); 
+          props.buffer.updated && props.handleBufferChange();
         }
       }
     )
@@ -197,7 +197,6 @@ export default defineComponent({
               runtimeInfo = { props.runtimeInfo }
               barcodeRects = { barcodeRects.value }
             ></DWTController>
-            <DWTTips></DWTTips>
           </div>
         </div>
       </>

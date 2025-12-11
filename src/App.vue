@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent } from 'vue';
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import DynamsoftSDK from './components/DynamsoftSDK.vue';

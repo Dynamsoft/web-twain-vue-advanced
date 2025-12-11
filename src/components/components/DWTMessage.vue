@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { ref, defineComponent, watch, render, onMounted, inject, onUpdated} from 'vue';
+import { ref, defineComponent, onUpdated} from 'vue';
 
 export default defineComponent({
   props: {
@@ -24,13 +24,13 @@ export default defineComponent({
       <>
         <div class="dwt-output">
           <span>Message:(Double click to clear!)</span>
-          <div ref={ DWTOutPut_message } 
-               class="message" 
+          <div ref={ DWTOutPut_message }
+               class="message"
                ondblclick={ () => props.handleEvent("doubleClick") }>
             <ul>
                 {
                   props.messages.map((oneMsg) =>
-                      <li key={ oneMsg.time + "_" + Math.floor(Math.random(1) * 1000000000) } 
+                      <li key={ oneMsg.time + "_" + Math.floor(Math.random(1) * 1000000000) }
                           className={ oneMsg.type }>{ oneMsg.text }</li>
                   )
                 }

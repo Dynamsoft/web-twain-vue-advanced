@@ -54,61 +54,61 @@ export default defineComponent({
     let toolList = [
       {
         value: "editor",
-        src: require('@/assets/images/ShowEditor.png'),
+        src: new URL('@/assets/images/ShowEditor.png', import.meta.url).href,
         title: "Show Image Editor",
         alt: "Show Image Editor"
       },
       {
         value: "rotateL",
-        src: require('@/assets/images/RotateLeft.png'),
+        src: new URL('@/assets/images/RotateLeft.png', import.meta.url).href,
         title: "Rotate Left",
         alt: "Rotate Left"
       },
       {
         value: "rotateR",
-        src: require('@/assets/images/RotateRight.png'),
+        src: new URL('@/assets/images/RotateRight.png', import.meta.url).href,
         title: "Rotate Right",
         alt: "Rotate Right"
       },
       {
         value: "rotate180",
-        src: require('@/assets/images/Rotate180.png'),
+        src: new URL('@/assets/images/Rotate180.png', import.meta.url).href,
         title: "Rotate 180",
         alt: "Rotate 180"
       },
       {
         value: "mirror",
-        src: require('@/assets/images/Mirror.png'),
+        src: new URL('@/assets/images/Mirror.png', import.meta.url).href,
         title: "Mirror",
         alt: "Mirror"
       },
       {
         value: "flip",
-        src: require('@/assets/images/Flip.png'),
+        src: new URL('@/assets/images/Flip.png', import.meta.url).href,
         title: "Flip",
         alt: "Flip"
       },
       {
         value: "removeS",
-        src: require('@/assets/images/RemoveSelectedImages.png'),
+        src: new URL('@/assets/images/RemoveSelectedImages.png', import.meta.url).href,
         title: "Remove Selected Images",
         alt: "Remove Selected Images"
       },
       {
         value: "removeA",
-        src: require('@/assets/images/RemoveAllImages.png'),
+        src: new URL('@/assets/images/RemoveAllImages.png', import.meta.url).href,
         title: "Remove All Images",
         alt: "Remove All images"
       },
       {
         value: "changeSize",
-        src: require('@/assets/images/ChangeSize.png'),
+        src: new URL('@/assets/images/ChangeSize.png', import.meta.url).href,
         title: "Change Image Size",
         alt: "Change Image Size"
       },
       {
         value: "crop",
-        src: require('@/assets/images/Crop.png'),
+        src: new URL('@/assets/images/Crop.png', import.meta.url).href,
         title: "Crop",
         alt: "Crop"
       },
@@ -251,12 +251,12 @@ export default defineComponent({
         }
     })
 
-    watch(() => props.dwt, 
+    watch(() => props.dwt,
     () => {
       viewReady.value = true;
     })
 
-    watch(() => viewReady.value, 
+    watch(() => viewReady.value,
     (newViewReady,prevViewReady) => {
       if(props.dwt !== null && newViewReady && !prevViewReady) {
         props.dwt.Viewer.width = width;
@@ -271,7 +271,7 @@ export default defineComponent({
     }
     )
 
-    watch(() => props.runtimeInfo.ImageWidth, 
+    watch(() => props.runtimeInfo.ImageWidth,
     () => {
       newWidth.value = props.runtimeInfo.ImageWidth;
     }
@@ -293,18 +293,18 @@ export default defineComponent({
             <div className="dwt-imageSizeEditor" style={ bShowChangeSizeUI.value ? { visibility: "visible" } : { visibility: "hidden" } }>
                 <ul>
                     <li>
-                        <label>New Height (pixel): 
+                        <label>New Height (pixel):
                           <input tabIndex="6" type="text" value={ newHeight.value } className="width_48p floatR" onChange={ (event) => handleNewSize(event, true) } />
                         </label>
                     </li>
                     <li>
-                        <label>New Width (pixel): 
+                        <label>New Width (pixel):
                           <input tabIndex="6" type="text" value={ newWidth.value } className="width_48p floatR" onChange={ (event) => handleNewSize(event) } />
                         </label>
                     </li>
                     <li >Interpolation method:
-                        <select value={ interpolationMethod.value } 
-                                className="width_48p floatR" 
+                        <select value={ interpolationMethod.value }
+                                className="width_48p floatR"
                                 onChange={ (event) => handleInterpolationMethodChange(event) }>
                         <option value="1">NearestNeighbor</option>
                         <option value="2">Bilinear</option>
@@ -329,13 +329,13 @@ export default defineComponent({
             </div>
             <div class="pagination">
               <div class="pagination-tool">
-                <button value="first" 
+                <button value="first"
                         onClick={ (event) => handleNavigation(event.target.value) }
                         disabled={ props.buffer.current < 1 ? true : false }>
                   { " |< " }
                 </button>
                 &nbsp;
-                <button value="previous" 
+                <button value="previous"
                         onClick={ (event) => handleNavigation(event.target.value) }
                         disabled={ props.buffer.current < 1 ? true : false }>
                   { " < " }
@@ -343,13 +343,13 @@ export default defineComponent({
                 <input style="text-align:right" type="text" value={ props.buffer.current > -1 ? props.buffer.current + 1 : 0 } readonly  disabled="disabled"/>
                   &nbsp;{ "/" }&nbsp;
                 <input type="text" value={ props.buffer.count > 0 ? props.buffer.count : 0 } readonly  disabled="disabled"/>
-                <button value="next" 
+                <button value="next"
                         onClick={ (event) => handleNavigation(event.target.value) }
                         disabled={ props.buffer.count-1 === props.buffer.current ? true : false } >
                   { " > " }
                 </button>
                 &nbsp;
-                <button value="last" 
+                <button value="last"
                         disabled={ props.buffer.count-1 === props.buffer.current ? true : false }
                         onClick={ (event) => handleNavigation(event.target.value) }>
                   { " >| " }

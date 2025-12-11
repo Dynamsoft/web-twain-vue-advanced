@@ -85,7 +85,7 @@ export default defineComponent({
             handleBufferChange()
           }
         });
-        
+
         // from v19.0
         DWTObject.Addon.PDF.SetReaderOptions({
             convertMode: Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL,
@@ -95,7 +95,7 @@ export default defineComponent({
             },
             preserveUnmodifiedOnSave: true
         });
-        
+
         DWTObject.Viewer.on('pageAreaSelected', (nImageIndex, rect) => {
           if (rect.length > 0) {
             let currentRect = rect[rect.length - 1];
@@ -146,13 +146,13 @@ export default defineComponent({
           featureSet = { scan: 0b1, load: 0b100, save: 0b1000, upload: 0b10000, barcode: 0b100000, uploader: 0b1000000 };
           features = 0b1111101;
           initialStatus = 0;
-        } 
-        if(DWTObject === null) 
+        }
+        if(DWTObject === null)
           loadDWT(true);
-        
+
       });
     })
-    
+
     watch(buffer,() => {
       if (buffer.count > 0) {
           runtimeInfo.curImageTimeStamp = (new Date()).getTime();

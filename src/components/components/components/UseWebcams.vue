@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { defineComponent, defineExpose, ref, reactive, watch, inject, onUpdated } from 'vue';
+import { defineComponent, ref, reactive, watch, inject, onUpdated } from 'vue';
 import WebcamOption from './WebcamOption.vue'
 import RangePicker from './RangePicker.vue'
 
@@ -45,7 +45,6 @@ export default defineComponent({
     })
 
     const onCameraChange = (value) => {
-      console.log(value);
       deviceSetup.currentCamera = value;
 
       if(value === "noCamera") {
@@ -78,7 +77,7 @@ export default defineComponent({
         strMediaType = _currentMediaType;
         strResolution = _currentResolution;
         frameRate = _currentFrameRate;
-        
+
         for(let i=0; i<mediaTypes.length-1; i++) {
           mediaTypes[i] === _currentMediaType
             ? _mediaTypes[i] = { value: mediaTypes[i].toString(), checked: true }
@@ -217,7 +216,7 @@ export default defineComponent({
 
           let newRangePicker = {
             bMutable: bMutable,
-            bCamera: bCamera, 
+            bCamera: bCamera,
             val: value,
             min: min,
             max: max,
@@ -310,7 +309,7 @@ export default defineComponent({
                   targetObject = { deviceSetup.currentCamera }
                   valuePacks = { cameraSettings }
                   current = { "Resolution" }
-                  handleValuePicking = { (valuePair) => playVideo(valuePair) } 
+                  handleValuePicking = { (valuePair) => playVideo(valuePair) }
                 />
               ) : ""
             }
@@ -319,9 +318,9 @@ export default defineComponent({
             <button class="btn-showVideo" onClick={ toggleShowVideo }>
               <span>{ deviceSetup.isVideoOn ? "Hide Video" : "Show Video" }</span>
             </button>
-            <button 
+            <button
               class={ deviceSetup.isVideoOn ? "btn-capture" : "btn-capture btn-disabled" }
-              disabled={ deviceSetup.isVideoOn ? false : true } 
+              disabled={ deviceSetup.isVideoOn ? false : true }
               onClick={ captureImage }>
               <span>Capture</span>
             </button>

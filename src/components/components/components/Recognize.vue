@@ -46,7 +46,6 @@ export default defineComponent({
     }
 
     const readBarcode = () => {
-
       let previewModeEl = document.querySelector('.previewMode');
       if (previewModeEl && previewModeEl.value !== "1") {
           handleOutPutMessage("Cannot read barcode in this view mode. Please switch to 1x1 view mode.", "error");
@@ -58,7 +57,7 @@ export default defineComponent({
       handleBarcodeResults("clear");
       readingBarcode.value = true;
       handleNavigating(false);
-      
+
       if(props.dwt.Viewer) {
         props.dwt.Viewer.gotoPage(props.dwt.CurrentImageIndexInBuffer);
       }
@@ -107,41 +106,41 @@ export default defineComponent({
     const doReadBarcode = (settings, callback) => {
       let bHasCallback = props.Dynamsoft.Lib.isFunction(callback);
       props.dwt.Addon.BarcodeReader.updateRuntimeSettings(settings).then((settings) => {
-        let userData = props.runtimeInfo.curImageTimeStamp;
-        let outputResults = () => {
-          if(dbrResults.value.length === 0) {
-            handleOutPutMessage("--------------------------", "seperator");
-            handleOutPutMessage("Nothing found on the image!", "important", false, false);
-            doneReadingBarcode();
-          } else {
-            handleOutPutMessage("--------------------------", "seperator");
-            handleOutPutMessage("Total barcode(s) found: " + dbrResults.value.length, "important");
-            for(let i=0; i<dbrResults.value.length; i++) {
-              let result = dbrResults.value[i];
-              handleOutPutMessage("------------------", "seperator");
-              handleOutPutMessage("Barcode " + (i + 1).toString());
-              handleOutPutMessage("Type: " + result.BarcodeFormatString);
-              handleOutPutMessage("Value: " + result.BarcodeText, "important");
-            }
-            if(props.runtimeInfo.curImageTimeStamp === userData) {
-              handleBarcodeResults("clear");
-              handleBarcodeResults(dbrResults);
-            }
-            doneReadingBarcode();
+      let userData = props.runtimeInfo.curImageTimeStamp;
+      let outputResults = () => {
+        if(dbrResults.value.length === 0) {
+          handleOutPutMessage("--------------------------", "seperator");
+          handleOutPutMessage("Nothing found on the image!", "important", false, false);
+          doneReadingBarcode();
+        } else {
+          handleOutPutMessage("--------------------------", "seperator");
+          handleOutPutMessage("Total barcode(s) found: " + dbrResults.value.length, "important");
+          for(let i=0; i<dbrResults.value.length; i++) {
+            let result = dbrResults.value[i];
+            handleOutPutMessage("------------------", "seperator");
+            handleOutPutMessage("Barcode " + (i + 1).toString());
+            handleOutPutMessage("Type: " + result.BarcodeFormatString);
+            handleOutPutMessage("Value: " + result.BarcodeText, "important");
           }
-        };
-        let onDbrReadSuccess = (results) => {
-          dbrResults.value = dbrResults.value.concat(results);
-          bHasCallback ? callback() : outputResults();
-        };
-        let onDbrReadFail = (_code, _msg) => {
-          handleException({
-            code: _code,
-            message: _msg
-          });
-          bHasCallback ? callback() :outputResults();
-        };
-        props.dwt.Addon.BarcodeReader.decode(props.buffer.current).then(onDbrReadSuccess, onDbrReadFail);
+          if(props.runtimeInfo.curImageTimeStamp === userData) {
+            handleBarcodeResults("clear");
+            handleBarcodeResults(dbrResults);
+          }
+          doneReadingBarcode();
+        }
+      };
+      let onDbrReadSuccess = (results) => {
+        dbrResults.value = dbrResults.value.concat(results);
+        bHasCallback ? callback() : outputResults();
+      };
+      let onDbrReadFail = (_code, _msg) => {
+        handleException({
+          code: _code,
+          message: _msg
+        });
+        bHasCallback ? callback() :outputResults();
+      };
+      props.dwt.Addon.BarcodeReader.decode(props.buffer.current).then(onDbrReadSuccess, onDbrReadFail);
       });
     }
 
@@ -171,7 +170,7 @@ export default defineComponent({
       <>
         <div class="dwt-recognize-content">
           <div class="dwt-recognize-scan">
-            <button 
+            <button
               class={ props.buffer.count === 0 ? "btn-readBarcode btn-disabled" : "btn-readBarcode" }
               disabled={ (props.buffer.count === 0) ? true : false }
               onClick={ readBarcode }>
@@ -180,7 +179,7 @@ export default defineComponent({
           </div>
 
           <div class="dwt-recognize-scan" style={ props.barcodeRects.length > 0 ? "display:block; margin-top:10px" : "display:none" }>
-            <button 
+            <button
               class={ props.barcodeRects.length > 0 ?  "btn-clear-barcode" : "btn-clear-barcode btn-display-none" }
               onClick={ clearBarcodeRects }>
               <span>Clear Barcode Rects</span>

@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, toRaw, watch, onMounted, provide } from 'vue';
+import { defineComponent, ref, reactive, watch, provide } from 'vue';
 import CustomScan from './components/CustomScan.vue';
 import UseWebcams from './components/UseWebcams.vue';
 import LoadFiles from './components/LoadFiles.vue';
@@ -20,7 +20,7 @@ export default defineComponent({
 
   setup(props) {
 
-    const arrowDown = require('@/assets/arrow-down.png');
+    const arrowDown = new URL('@/assets/arrow-down.png', import.meta.url).href;
     const bWin = ref(false);
     const useWebcamsRef = ref(null);
 
@@ -34,7 +34,7 @@ export default defineComponent({
 
     const changeTab = (i) => {
       switch (i) {
-        case 0 : 
+        case 0 :
           TabShow.showCustomScan ? TabShow.showCustomScan = false : (TabShow.showCustomScan = true , TabShow.showUseWebcams = false , TabShow.showLoadFiles = false);
           break;
         case 1 :
@@ -57,7 +57,7 @@ export default defineComponent({
         bWin.value = Dynamsoft.Lib.env.bWin;
       }
     });
-    
+
     provide('handleCloseVideo',
       () => {
         useWebcamsRef.value.toggleCameraVideo(false);

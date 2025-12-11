@@ -1,12 +1,12 @@
 <script lang="jsx">
 
 import { defineComponent } from 'vue';
+import DWTLogo from '@/assets/icon-dwt.svg';
+import logo from '@/assets/logo.png';
+import DynamsoftLogo from '@/assets/logo-dynamsoft-white.svg';
 
 export default defineComponent({
   setup() {
-    const DWTLogo = require('@/assets/icon-dwt.svg');
-    const logo = require('@/assets/logo.png');
-    const DynamsoftLogo = require('@/assets/logo-dynamsoft-white.svg');
 
     return () => (
       <>

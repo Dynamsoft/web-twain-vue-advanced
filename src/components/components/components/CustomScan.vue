@@ -1,5 +1,5 @@
 <script lang="jsx">
-import { defineComponent, ref, reactive, toRaw, watch, inject } from 'vue';
+import { defineComponent, ref, reactive, watch, inject } from 'vue';
 
 export default defineComponent({
   props: {
@@ -73,7 +73,7 @@ export default defineComponent({
 
     const acquireImage = () => {
       if(props.dwt){
-        props.dwt.GetDevicesAsync().then((devices)=>{   
+        props.dwt.GetDevicesAsync().then((devices)=>{
             for (var i = 0; i < devices.length; i++) { // Get how many sources are installed in the system
                 if (devices[i].displayName === deviceSetup.currentScanner) {
                     return devices[i];
@@ -179,8 +179,8 @@ export default defineComponent({
               <option value="600">600 DPI</option>
             </select>
           </div>
-          <button 
-            class = {scanners.value.length > 0 ?  "btn-scan" : "btn-scan btn-disable"} 
+          <button
+            class = {scanners.value.length > 0 ?  "btn-scan" : "btn-scan btn-disable"}
             disabled = {scanners.value.length > 0 ? false : true}
             onClick = { acquireImage }>
             <span>Scan</span>
