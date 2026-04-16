@@ -23,8 +23,8 @@ export default defineComponent({
 
     // const
     const re = /^\d+$/;
-    const width = "590px";
-    const height = "522px";
+    let width = "590px";
+    let height = "522px";
     let imageEditor;
 
     if(props.blocks !== undefined) {
