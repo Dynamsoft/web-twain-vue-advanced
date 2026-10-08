@@ -69,6 +69,7 @@ export default defineComponent({
           settings.scaleDownThreshold = 2300;
         }
         settings.barcodeFormatIds = props.Dynamsoft.DBR.EnumBarcodeFormat.BF_ALL;
+        settings.barcodeFormatIds_2 = props.Dynamsoft.DBR.EnumBarcodeFormat_2.BF2_DOTCODE + props.Dynamsoft.DBR.EnumBarcodeFormat_2.BF2_POSTALCODE;
         settings.region.measuredByPercentage = 0;
         if(props.zones.length > 0) {
           let i = 0;
